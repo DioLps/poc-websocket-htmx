@@ -1,0 +1,47 @@
+<html>
+  <head>
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        background: url("http://forums.crackberry.com/attachments/blackberry-10-wallpapers-f308/137432d1361639896t-z10-wallpaper-set-z10-music.jpg");
+      }
+      section {
+        margin: 1rem;
+      }
+      input {
+        width: 100%;
+        min-height: 2rem;
+        padding: 0 0.2rem;
+      }
+      #chat_room {
+        display: flex;
+        flex-direction: column;
+      }
+      #message {
+        margin: 0 1rem 1rem 1rem;
+        padding: 0.5rem;
+        border: 1px solid lightblue;
+        border-radius: 4px;
+        background-color: #f5f5f5;
+        display: flex;
+        flex-direction: column;
+      }
+      small {
+        color: grey;
+      }
+    </style>
+  </head>
+  <body>
+    <section id="chat" hx-ext="ws" ws-connect="ws://localhost:443/">
+      <form id="form" ws-send>
+        <input type="text" name="chat_message" id="chat_input" />
+      </form>
+      <div id="chat_room"></div>
+    </section>
+
+    <script type="module" src="./custom-htmx-events.js"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.11"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.11/dist/ext/ws.js"></script>
+  </body>
+</html>
