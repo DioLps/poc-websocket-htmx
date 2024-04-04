@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Message Detail</title>
+  </head>
+  <body hx-ext="ws" ws-connect="ws://localhost:443/">
+    <div ws-send hx-trigger="revealed" id="message-page-load"></div>
+
+    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Officia, illum.
+    Dolore iure optio nam magni vel perferendis. Aut, sed quia molestiae iure
+    laborum voluptatibus! Ab officiis architecto asperiores? Reprehenderit,
+    odit!
+
+    <script src="https://unpkg.com/htmx.org@1.9.11"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.11/dist/ext/ws.js"></script>
+  </body>
+</html>

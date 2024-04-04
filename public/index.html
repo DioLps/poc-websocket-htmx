@@ -34,13 +34,12 @@
   </head>
   <body>
     <section id="chat" hx-ext="ws" ws-connect="ws://localhost:443/">
-      <form id="form" ws-send>
+      <form id="form" ws-send hx-on="htmx:wsAfterSend: this.reset()">
         <input type="text" name="chat_message" id="chat_input" />
       </form>
       <div id="chat_room"></div>
     </section>
 
-    <script type="module" src="./custom-htmx-events.js"></script>
     <script src="https://unpkg.com/htmx.org@1.9.11"></script>
     <script src="https://unpkg.com/htmx.org@1.9.11/dist/ext/ws.js"></script>
   </body>
