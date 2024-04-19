@@ -52,7 +52,7 @@ DB.TODO.initMemoryDB().then(() => {
             const todo = DB.TODO.create(title);
             const response = await renderTodo(todo);
 
-            let attr = 'hx-swap-oob="afterend:#todos-list"';
+            let attr = 'hx-swap-oob="beforeend:#todos-list"';
 
             if (list.length === 0) {
               attr = 'hx-swap-oob="innerHTML:#todos-list"';
