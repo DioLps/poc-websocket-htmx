@@ -10,13 +10,13 @@ async function _getAllFromThisUser() {
 }
 
 async function initMemoryDB() {
-  // try {
-  //   console.log("Initializing DB...");
-  //   db = await _getAllFromThisUser();
-  //   console.log("Okay!");
-  // } catch (error) {
-  //   console.log("Exception in initMemoryDB: ", error);
-  // }
+  try {
+    console.log("Initializing DB...");
+    db = await _getAllFromThisUser();
+    console.log("Okay!");
+  } catch (error) {
+    console.log("Exception in initMemoryDB: ", error);
+  }
 }
 
 function list() {
