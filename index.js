@@ -11,7 +11,7 @@ DB.TODO.initMemoryDB().then(() => {
   const sockserver = new WebSocketServer({ port: 443 });
 
   const { parseAndLoad } = require("./htmlParser");
-  const { container, renderTodos } = require("./template-utils");
+  const { container, renderTodos, renderTodo } = require("./template-utils");
 
   sockserver.on("connection", (ws) => {
     console.log("New client connected!");
@@ -36,6 +36,29 @@ DB.TODO.initMemoryDB().then(() => {
             const res = DB.TODO.updateById(todo.id, todo);
             console.log("updated id: ", formId);
             console.log("res: ", res);
+            return;
+          } catch (error) {
+            console.log("error - >", error);
+            return;
+          }
+        case "create-todo-request":
+          try {
+            if (data.title === "") {
+              return;
+            }
+            const list = DB.TODO.list();
+
+            const title = data.title;
+            const todo = DB.TODO.create(title);
+            const response = await renderTodo(todo);
+
+            let attr = 'hx-swap-oob="afterend:#todos-list"';
+
+            if (list.length === 0) {
+              attr = 'hx-swap-oob="innerHTML:#todos-list"';
+            }
+
+            return ws.send(container(response, attr));
           } catch (error) {
             console.log("error - >", error);
             return;

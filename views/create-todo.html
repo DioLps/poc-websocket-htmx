@@ -23,15 +23,10 @@
       inputmode=""
       type="text"
       name="title"
+      ws-send
+      hx-trigger="keyup[keyCode==13]"
+      id="create-todo-request"
+      hx-on="htmx:wsAfterSend: onSubmitTodo()"
     ></md-filled-text-field>
   </form>
-  <div slot="actions">
-    <div style="flex: 1"></div>
-    <md-text-button form="create-form" value="cancel" role="presentation">
-      Cancel
-    </md-text-button>
-    <md-filled-button form="create-form" value="save" role="presentation">
-      Save
-    </md-filled-button>
-  </div>
 </md-dialog>

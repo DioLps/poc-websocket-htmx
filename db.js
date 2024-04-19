@@ -10,29 +10,33 @@ async function _getAllFromThisUser() {
 }
 
 async function initMemoryDB() {
-  try {
-    console.log("Initializing DB...");
-    db = await _getAllFromThisUser();
-    console.log("Okay!");
-  } catch (error) {
-    console.log("Exception in initMemoryDB: ", error);
-  }
+  // try {
+  //   console.log("Initializing DB...");
+  //   db = await _getAllFromThisUser();
+  //   console.log("Okay!");
+  // } catch (error) {
+  //   console.log("Exception in initMemoryDB: ", error);
+  // }
 }
 
 function list() {
-  return db;
+  return JSON.parse(JSON.stringify(db));
 }
 
 function getById(id) {
-  return db.find((item) => item.id === Number(id));
+  const todo =  db.find((item) => item.id === Number(id));
+  return JSON.parse(JSON.stringify(todo));
 }
 
-function create(todo) {
-  db.push({
+function create(title) {
+  const todo = {
     userId,
-    ...todo,
-  });
-  return db;
+    id: db.length + 1,
+    completed: false,
+    title,
+  }
+  db.push(todo);
+  return JSON.parse(JSON.stringify(todo));
 }
 
 function updateById(id, todo) {
@@ -42,12 +46,12 @@ function updateById(id, todo) {
     }
     return item;
   });
-  return db;
+  return JSON.parse(JSON.stringify(db));
 }
 
 function deleteById(id) {
   db = db.filter((item) => item.id !== Number(id));
-  return db;
+  return JSON.parse(JSON.stringify(db));
 }
 
 module.exports = {
