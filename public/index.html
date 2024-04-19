@@ -31,7 +31,6 @@
   <body hx-ext="ws" ws-connect="ws://localhost:443/">
     <main>
       <h3 class="md-typescale-headline-medium">Chores</h3>
-      <!-- <p class="md-typescale-body-large">Check out these controls in a form!</p> -->
 
       <md-list class="todos">
         <div class="todos__container" id="todos-list"></div>
@@ -44,12 +43,5 @@
     </main>
 
     <div id="create-todo-dialog-shell" ws-send hx-trigger="revealed"></div>
-
-    <!-- <section id="chat" hx-ext="ws" ws-connect="ws://localhost:443/">
-      <form id="form" ws-send hx-on="htmx:wsAfterSend: this.reset()">
-        <input type="text" name="chat_message" id="chat_input" />
-      </form>
-      <div id="chat_room"></div>
-    </section> -->
   </body>
 </html>
