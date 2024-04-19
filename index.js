@@ -1,65 +1,69 @@
 const express = require("express");
-const webserver = express()
+
+express()
   .use(express.static("./public"))
-  .listen(3000, () => console.log(`Listening on ${3000}`));
-const { WebSocketServer } = require("ws");
-const sockserver = new WebSocketServer({ port: 443 });
+  .listen(3000, () => console.log(`Listening on http://localhost:${3000}`));
 
-const container = (child, attr) => `<div ${attr}>${child}</div>`;
-const message = (chat_message, id) =>
-  container(
-    `<a href="./message.html?id=${id}"><p id="message"><small>${"You"} said: </small>${chat_message}</p></a>`,
-    'hx-swap-oob="beforeend:#chat_room"'
-  );
+const DB = require("./db");
 
-const allMessages = [];
-sockserver.on("connection", (ws) => {
-  console.log("New client connected!");
-  // if (condition) {
-  //   // ws.send("allMessages")
-  // }
-  ws.send("Server: Connection established");
-  ws.on("close", () => console.log("Client has disconnected!"));
-  ws.on("message", (rawData) => {
-    const data = JSON.parse(rawData);
-    if (data.HEADERS["HX-Trigger"] === "message-page-load") {
-      const sourceUrl = new URL(data.HEADERS["HX-Current-URL"]);
-      const id = Number(sourceUrl.searchParams.get("id"));
-      console.log("allMessages", allMessages);
-      const clientMessage = allMessages.find((msg) => msg.id === id);
-      if (clientMessage) {
-        ws.send(`You said: ${clientMessage.chat_message}`);
-      } else {
-        ws.send(`404`);
+DB.TODO.initMemoryDB().then(() => {
+  const { WebSocketServer } = require("ws");
+  const sockserver = new WebSocketServer({ port: 443 });
+
+  const { parseAndLoad } = require("./htmlParser");
+  const { container, renderTodos } = require("./template-utils");
+
+  sockserver.on("connection", (ws) => {
+    console.log("New client connected!");
+    ws.send("Server: Connection established");
+    ws.on("close", () => console.log("Client has disconnected!"));
+
+    ws.on("message", async (rawData) => {
+      const data = JSON.parse(rawData);
+
+      // console.log("data", data);
+
+      switch (data.HEADERS["HX-Trigger"]) {
+        case "load-todos":
+          const list = DB.TODO.list();
+          const todos = await renderTodos(list);
+          return ws.send(todos);
+        case "toggle-todo-request":
+          try {
+            const formId = data.HEADERS["HX-Trigger-Name"];
+            const todo = DB.TODO.getById(formId);
+            todo.completed = !todo.completed;
+            const res = DB.TODO.updateById(todo.id, todo);
+            console.log("updated id: ", formId);
+            console.log("res: ", res);
+          } catch (error) {
+            console.log("error - >", error);
+            return;
+          }
+        case "delete-todo-request":
+          try {
+            const formId = data.HEADERS["HX-Trigger-Name"];
+            const res = DB.TODO.deleteById(formId);
+            const todos = await renderTodos(res);
+            return ws.send(todos);
+          } catch (error) {
+            console.log("error - >", error);
+            return;
+          }
+        case "create-todo-dialog-shell":
+          const createDialog = await parseAndLoad("create-todo");
+          return ws.send(
+            container(
+              createDialog,
+              'hx-swap-oob="innerHTML:#create-todo-dialog-shell"'
+            )
+          );
+        default:
+          console.log("Received not authorized message", data);
+          break;
       }
-      return;
-    }
-
-    console.log("fudeu");
-
-    // sockserver.clients.forEach((client) => {
-    // });
-    const chat_message = data.chat_message;
-    const id = allMessages.length + 1;
-    allMessages.push({
-      id,
-      chat_message,
     });
-    console.log(`Client message: ${chat_message}, id: ${id}`);
-    ws.send(message(chat_message, id));
 
-    if (chat_message == "Hey") {
-      setTimeout(() => {
-        ws.send(
-          container(
-            `<p id="message"><small>Server said: </small> Ho, let's go! </p>`,
-            'hx-swap-oob="beforeend:#chat_room"'
-          )
-        );
-      }, 500);
-    }
+    ws.onerror = () => console.log("websocket error");
   });
-  ws.onerror = function () {
-    console.log("websocket error");
-  };
 });
