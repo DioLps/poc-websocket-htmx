@@ -8,6 +8,7 @@ body {
   margin: 0;
   overflow-x: hidden;
   font-family: var(--md-ref-typeface-brand, "Roboto");
+  position: relative;
 }
 
 body {
@@ -17,7 +18,7 @@ body {
 }
 
 main {
-  padding: 0.2rem .5rem;
+  padding: 0.2rem 0.5rem;
 }
 
 h1,
@@ -59,21 +60,36 @@ p {
   margin-bottom: 1rem;
 } */
 
-/* Material */
-md-filled-text-field {
+textarea {
   width: 100%;
 }
 
 @media screen and (min-width: 375px) and (max-width: 425px) {
-  md-dialog {
+  dialog {
     min-width: 90vw;
   }
 }
 
 @media screen and (min-width: 768px) {
-  md-dialog {
+  dialog {
     min-width: 55vw;
   }
 }
 
-/* End of Material */
+.create-todo {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+}
+
+.create-todo::before {
+  position: fixed;
+  background-color: #00000080;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  content: " ";
+}

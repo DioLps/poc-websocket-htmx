@@ -6,7 +6,7 @@ const createEle = (child, attr, tag = "div") =>
 
 const container = (child, attr) => createEle(child, attr);
 const todosContainer = (
-  child = "<span style='margin-left:.5rem' class='md-typescale-body-medium' id='no-items'> No items </span>"
+  child = "<span style='margin-left:.5rem' class='text-lg' id='no-items'> No items </span>"
 ) => container(child, 'hx-swap-oob="innerHTML:#todos-list"');
 
 const renderTodos = async (list) => {
