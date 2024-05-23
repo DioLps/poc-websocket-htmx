@@ -8,7 +8,7 @@
       href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./css//custom-style.css" />
+    <link rel="stylesheet" href="./custom-style.css" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="./index.js" defer></script>
     <script src="https://unpkg.com/htmx.org@1.9.11" defer></script>
@@ -22,12 +22,12 @@
       <h3 class="text-2xl font-bold mb-3">Chores</h3>
 
       <div class="todos">
-        <div class="todos__container bg-purple-100 divide-y-2 divide-gray-100 py-2" id="todos-list"></div>
+        <div class="todos__container bg-blue-100 divide-y-2 divide-gray-100 py-2" id="todos-list"></div>
         <div ws-send hx-trigger="revealed" id="load-todos"></div>
       </div>
 
       <button
-        class="action-fab w-24 h-12 bg-purple-300 rounded shadow flex justify-center items-center"
+        class="action-fab w-24 h-12 bg-blue-300 rounded shadow flex justify-center items-center"
         label="New"
         onclick="onCreate()"
       >
