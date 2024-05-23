@@ -20,8 +20,8 @@ async function initMemoryDB() {
 }
 
 function list() {
-  // return JSON.parse(JSON.stringify(db));
-  return JSON.parse(JSON.stringify([]));
+  return JSON.parse(JSON.stringify(db));
+  // return JSON.parse(JSON.stringify([]));
 }
 
 function getById(id) {
